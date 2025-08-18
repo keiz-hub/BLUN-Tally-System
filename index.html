@@ -1,160 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Pageant Scoring System</title>
+  <meta charset="UTF-8">
+  <title>Pageant Scoring System – Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; }
-    table { border-collapse: collapse; width: 95%; margin: 20px auto; }
-    th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
-    h1, h2 { text-align: center; }
-    .winner { font-weight: bold; background: #dff0d8; }
-    input { width: 60px; }
-    .controls { text-align:center; margin-bottom: 15px; }
-    button { margin: 5px; padding: 8px 15px; cursor: pointer; }
-  </style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f9f8f6;
+  margin: 0; padding: 0;
+}
+header {
+  background: #2e7d32;
+  color: white;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+header img {
+  height: 50px;
+  width: 50px;
+  background: #d7ccc8;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+h1, h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2e7d32;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  background: #d7ccc8;
+  font-weight: 600;
+}
+button {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 5px;
+  transition: 0.3s;
+}
+button:hover {
+  background: #1b5e20;
+}
+.controls {
+  text-align: center;
+  margin-bottom: 20px;
+}
+</style>
+  <script src="config.js"></script>
 </head>
 <body>
-  <h1>Pageant Scoring System</h1>
+  <header>
+    <img alt="Logo Placeholder">
+    <h1>Pageant Scoring System – Admin</h1>
+  </header>
+  <div class="container">
+    
+<div class="controls">
+  <input type="file" id="fileInput" multiple>
+  <button onclick="processFiles()">Upload Judge CSVs</button>
+  <button onclick="exportFinal()">Export Final Results</button>
+</div>
+<h2>Final Results</h2>
+<table id="resultsTable">
+  <thead>
+    <tr><th>Rank</th><th>Contestant</th><th>Final Score</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+<script src="admin.js"></script>
 
-  <div class="controls">
-    <button onclick="calculate()">Compute Results</button>
-    <button onclick="exportCSV()">Export Results (CSV)</button>
   </div>
-
-  <table id="scoreTable">
-    <thead>
-      <tr>
-        <th>Contestant</th>
-        <th>Judge</th>
-        <th>Talent (40%)</th>
-        <th>Beauty (30%)</th>
-        <th>Q&A (30%)</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <h2>Overall Results</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Contestant</th>
-        <th>Average Score</th>
-      </tr>
-    </thead>
-    <tbody id="resultsTable"></tbody>
-  </table>
-
-  <script>
-    // Configurable contestants and judges
-    const contestants = ["Alice", "Bob", "Carla", "David"];
-    const judges = ["Judge 1", "Judge 2", "Judge 3"];
-
-    // Build scoring table dynamically
-    const tbody = document.querySelector("#scoreTable tbody");
-
-    contestants.forEach(contestant => {
-      judges.forEach((judge, jIndex) => {
-        let row = document.createElement("tr");
-        if (jIndex === 0) {
-          let td = document.createElement("td");
-          td.innerText = contestant;
-          td.rowSpan = judges.length;
-          row.appendChild(td);
-        }
-        let tdJudge = document.createElement("td");
-        tdJudge.innerText = judge;
-        row.appendChild(tdJudge);
-
-        ["talent", "beauty", "qa"].forEach(cat => {
-          let td = document.createElement("td");
-          let input = document.createElement("input");
-          input.type = "number";
-          input.max = 100;
-          td.appendChild(input);
-          row.appendChild(td);
-        });
-
-        let tdTotal = document.createElement("td");
-        tdTotal.classList.add("total");
-        row.appendChild(tdTotal);
-
-        tbody.appendChild(row);
-      });
-    });
-
-    let lastResults = []; // store last computed results
-
-    function calculate() {
-      let contestantsData = {};
-
-      tbody.querySelectorAll("tr").forEach(row => {
-        let contestantCell = row.querySelector("td[rowspan]");
-        let contestant;
-        if (contestantCell) {
-          contestant = contestantCell.innerText;
-        } else {
-          let prev = row.previousElementSibling;
-          while (prev && !prev.querySelector("td[rowspan]")) {
-            prev = prev.previousElementSibling;
-          }
-          contestant = prev.querySelector("td[rowspan]").innerText;
-        }
-
-        let inputs = row.querySelectorAll("input");
-        if (inputs.length > 0) {
-          let score = 
-            (inputs[0].value * 0.4 || 0) +
-            (inputs[1].value * 0.3 || 0) +
-            (inputs[2].value * 0.3 || 0);
-
-          row.querySelector(".total").textContent = score.toFixed(2);
-
-          if (!contestantsData[contestant]) contestantsData[contestant] = [];
-          contestantsData[contestant].push(score);
-        }
-      });
-
-      let results = [];
-      for (let c in contestantsData) {
-        let avg = contestantsData[c].reduce((a,b) => a+b, 0) / contestantsData[c].length;
-        results.push({ name: c, avg: avg });
-      }
-
-      results.sort((a, b) => b.avg - a.avg);
-      lastResults = results; // save for CSV export
-
-      let resultsBody = document.getElementById("resultsTable");
-      resultsBody.innerHTML = "";
-      results.forEach((r, i) => {
-        let tr = document.createElement("tr");
-        if (i === 0) tr.classList.add("winner");
-        tr.innerHTML = `<td>${r.name}</td><td>${r.avg.toFixed(2)}</td>`;
-        resultsBody.appendChild(tr);
-      });
-    }
-
-    function exportCSV() {
-      if (lastResults.length === 0) {
-        alert("Please compute results first!");
-        return;
-      }
-
-      let csv = "Contestant,Average Score\n";
-      lastResults.forEach(r => {
-        csv += `${r.name},${r.avg.toFixed(2)}\n`;
-      });
-
-      let blob = new Blob([csv], { type: "text/csv" });
-      let url = window.URL.createObjectURL(blob);
-      let a = document.createElement("a");
-      a.href = url;
-      a.download = "pageant_results.csv";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-  </script>
 </body>
 </html>
