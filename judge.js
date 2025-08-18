@@ -24,20 +24,26 @@ window.onload = function() {
 
     let inputs = [];
     categories.forEach((cat, colIndex) => {
-      const td = document.createElement("td");
-      const input = document.createElement("input");
-      input.type = "number";
-      input.min = 0;
-      input.max = 100;
-      input.value = localStorage.getItem(`${JUDGE_NAME}_${contestant}_${cat.name}`) || "";
-      input.oninput = () => {
-        localStorage.setItem(`${JUDGE_NAME}_${contestant}_${cat.name}`, input.value);
-        updateTotal();
-      };
-      td.appendChild(input);
-      tr.appendChild(td);
-      inputs.push(input);
-    });
+  const td = document.createElement("td");
+  const input = document.createElement("input");
+  input.type = "number";
+  input.min = cat.min;
+  input.max = cat.max;
+  input.value = localStorage.getItem(`${JUDGE_NAME}_${contestant}_${cat.name}`) || "";
+  
+  // Restrict values dynamically
+  input.oninput = () => {
+    let val = parseFloat(input.value);
+    if (val < cat.min) input.value = cat.min;
+    if (val > cat.max) input.value = cat.max;
+    localStorage.setItem(`${JUDGE_NAME}_${contestant}_${cat.name}`, input.value);
+    updateTotal();
+  };
+  td.appendChild(input);
+  tr.appendChild(td);
+  inputs.push(input);
+});
+
 
     const tdTotal = document.createElement("td");
     tdTotal.className = "total-cell";
