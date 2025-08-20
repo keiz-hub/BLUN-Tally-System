@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pageant Admin Dashboard</title>
+  <title>Pageant Admin Dashboard - File Upload</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
 * {
@@ -152,6 +152,122 @@ h2::after {
   height: 3px;
   background: linear-gradient(45deg, #2d3748, #4a5568);
   border-radius: 2px;
+}
+
+.upload-area {
+  border: 3px dashed #cbd5e0;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.upload-area.dragover {
+  border-color: #4299e1;
+  background: #ebf8ff;
+  transform: scale(1.02);
+}
+
+.upload-area h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #2d3748;
+}
+
+.upload-area p {
+  color: #718096;
+  margin-bottom: 20px;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(66, 153, 225, 0.4);
+  transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(66, 153, 225, 0.6);
+}
+
+.uploaded-files {
+  margin-bottom: 30px;
+}
+
+.file-item {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.file-item:hover {
+  border-color: #cbd5e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.file-icon {
+  font-size: 24px;
+}
+
+.file-details h4 {
+  font-size: 16px;
+  color: #2d3748;
+  margin-bottom: 5px;
+}
+
+.file-details p {
+  font-size: 14px;
+  color: #718096;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.remove-btn {
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.remove-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(229, 62, 62, 0.4);
 }
 
 .stats-grid {
@@ -305,11 +421,6 @@ button:active {
   border-top: 1px solid #e2e8f0;
 }
 
-.refresh-btn {
-  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
-}
-
 .export-btn {
   background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
   box-shadow: 0 4px 15px rgba(66, 153, 225, 0.4);
@@ -320,51 +431,34 @@ button:active {
   box-shadow: 0 4px 15px rgba(229, 62, 62, 0.4);
 }
 
-.judge-status {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin-bottom: 30px;
+.process-btn {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
 }
 
-.judge-card {
-  background: white;
-  border: 2px solid #e2e8f0;
+.alert {
+  padding: 15px 20px;
   border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  font-weight: 500;
 }
 
-.judge-card.active {
-  border-color: #48bb78;
+.alert-success {
   background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+  color: #22543d;
+  border: 2px solid #9ae6b4;
 }
 
-.judge-card.inactive {
-  border-color: #fed7d7;
+.alert-error {
   background: linear-gradient(135deg, #fffafa 0%, #fed7d7 100%);
+  color: #742a2a;
+  border: 2px solid #fc8181;
 }
 
-.judge-card h4 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: #2d3748;
-}
-
-.judge-card .status {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.judge-card.active .status {
-  color: #38a169;
-}
-
-.judge-card.inactive .status {
-  color: #e53e3e;
+.alert-warning {
+  background: linear-gradient(135deg, #fffbf0 0%, #feebc8 100%);
+  color: #744210;
+  border: 2px solid #f6ad55;
 }
 
 .detailed-scores {
@@ -389,11 +483,20 @@ button:active {
   color: #2d3748;
 }
 
-.loading {
+.empty-state {
   text-align: center;
-  padding: 40px;
+  padding: 60px 20px;
   color: #718096;
-  font-style: italic;
+}
+
+.empty-state h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
 /* Responsive design */
@@ -430,6 +533,12 @@ button:active {
     grid-template-columns: 1fr;
   }
   
+  .file-item {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
   th, td {
     padding: 12px 8px;
     font-size: 14px;
@@ -464,7 +573,10 @@ button:active {
   
   <div class="container">
     <div class="nav-tabs">
-      <div class="nav-tab active" onclick="showPage('overview')">
+      <div class="nav-tab active" onclick="showPage('upload')">
+        📁 Upload Files
+      </div>
+      <div class="nav-tab" onclick="showPage('overview')">
         📊 Overview
       </div>
       <div class="nav-tab" onclick="showPage('rankings')">
@@ -473,126 +585,106 @@ button:active {
       <div class="nav-tab" onclick="showPage('detailed')">
         📋 Detailed Scores
       </div>
-      <div class="nav-tab" onclick="showPage('judges')">
-        👥 Judge Status
+    </div>
+
+    <!-- Upload Page -->
+    <div id="upload" class="page active">
+      <h2>Upload Judge Score Files</h2>
+      
+      <div class="upload-area" id="uploadArea">
+        <h3>📁 Drop CSV files here or click to browse</h3>
+        <p>Upload the exported CSV files from each judge's scoring system</p>
+        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+          Choose Files
+        </button>
+        <input type="file" id="fileInput" class="file-input" multiple accept=".csv" onchange="handleFileSelect(event)">
+      </div>
+
+      <div id="alertContainer"></div>
+
+      <div class="uploaded-files" id="uploadedFiles">
+        <!-- Uploaded files will appear here -->
+      </div>
+
+      <div class="controls">
+        <button onclick="processAllFiles()" class="process-btn" id="processBtn" disabled>
+          🔄 Process All Files
+        </button>
+        <button onclick="clearAllFiles()" class="clear-btn" id="clearBtn" disabled>
+          🗑️ Clear All Files
+        </button>
       </div>
     </div>
 
     <!-- Overview Page -->
-    <div id="overview" class="page active">
+    <div id="overview" class="page">
       <h2>Competition Overview</h2>
       
       <div class="stats-grid">
         <div class="stat-card">
-          <h3>Active Judges</h3>
-          <div class="value" id="active-judges">0</div>
-          <div class="label">Judges Scoring</div>
+          <h3>Total Judges</h3>
+          <div class="value" id="totalJudges">0</div>
+          <div class="label">Files Processed</div>
         </div>
         <div class="stat-card">
-          <h3>Total Scores</h3>
-          <div class="value" id="total-scores">0</div>
-          <div class="label">Scores Submitted</div>
+          <h3>Total Contestants</h3>
+          <div class="value" id="totalContestants">0</div>
+          <div class="label">Contestants Scored</div>
         </div>
         <div class="stat-card">
-          <h3>Completion Rate</h3>
-          <div class="value" id="completion-rate">0%</div>
-          <div class="label">Overall Progress</div>
+          <h3>Categories</h3>
+          <div class="value" id="totalCategories">0</div>
+          <div class="label">Scoring Categories</div>
         </div>
         <div class="stat-card">
           <h3>Leading Contestant</h3>
-          <div class="value" id="leading-contestant">-</div>
+          <div class="value" id="leadingContestant">-</div>
           <div class="label">Current Leader</div>
         </div>
       </div>
 
-      <div class="judge-status" id="judge-status-grid">
-        <!-- Judge status cards will be populated by JavaScript -->
+      <div id="overviewContent">
+        <div class="empty-state">
+          <h3>No Data Available</h3>
+          <p>Upload judge score files to see the competition overview</p>
+        </div>
       </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Contestant</th>
-            <th>Evening Gown</th>
-            <th>Talent</th>
-            <th>Interview</th>
-            <th>Swimwear</th>
-            <th>On-Stage Question</th>
-            <th>Average Total</th>
-          </tr>
-        </thead>
-        <tbody id="overview-table">
-          <!-- Data will be populated by JavaScript -->
-        </tbody>
-      </table>
     </div>
 
     <!-- Rankings Page -->
     <div id="rankings" class="page">
       <h2>Final Rankings</h2>
       
-      <table class="ranking-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Contestant</th>
-            <th>Total Score</th>
-            <th>Average Score</th>
-            <th>Judges Count</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="rankings-table">
-          <!-- Rankings will be populated by JavaScript -->
-        </tbody>
-      </table>
+      <div id="rankingsContent">
+        <div class="empty-state">
+          <h3>No Rankings Available</h3>
+          <p>Process judge score files to generate final rankings</p>
+        </div>
+      </div>
     </div>
 
     <!-- Detailed Scores Page -->
     <div id="detailed" class="page">
       <h2>Detailed Judge Scores</h2>
       
-      <div class="detailed-scores">
-        <table>
-          <thead id="detailed-header">
-            <!-- Headers will be populated by JavaScript -->
-          </thead>
-          <tbody id="detailed-table">
-            <!-- Detailed scores will be populated by JavaScript -->
-          </tbody>
-        </table>
+      <div id="detailedContent">
+        <div class="empty-state">
+          <h3>No Detailed Scores Available</h3>
+          <p>Upload and process judge files to view detailed scoring breakdown</p>
+        </div>
       </div>
-    </div>
-
-    <!-- Judge Status Page -->
-    <div id="judges" class="page">
-      <h2>Judge Status & Progress</h2>
-      
-      <table>
-        <thead>
-          <tr>
-            <th>Judge</th>
-            <th>Status</th>
-            <th>Scores Submitted</th>
-            <th>Completion %</th>
-            <th>Last Updated</th>
-            <th>Categories Completed</th>
-          </tr>
-        </thead>
-        <tbody id="judges-table">
-          <!-- Judge status will be populated by JavaScript -->
-        </tbody>
-      </table>
     </div>
     
     <div class="controls">
-      <button onclick="refreshData()" class="refresh-btn">🔄 Refresh Data</button>
-      <button onclick="exportFinalResults()" class="export-btn">📊 Export Final Results</button>
-      <button onclick="exportDetailedReport()" class="export-btn">📋 Export Detailed Report</button>
-      <button onclick="clearAllData()" class="clear-btn">⚠️ Clear All Data</button>
+      <button onclick="exportFinalResults()" class="export-btn" id="exportFinalBtn" disabled>
+        📊 Export Final Results
+      </button>
+      <button onclick="exportDetailedReport()" class="export-btn" id="exportDetailedBtn" disabled>
+        📋 Export Detailed Report
+      </button>
     </div>
   </div>
 
-  <script src="admin-dashboard.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972014ed132c5e40',t:'MTc1NTY3Mzk0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  <script src="admin-upload.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97202166217df879',t:'MTc1NTY3NDQ1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
