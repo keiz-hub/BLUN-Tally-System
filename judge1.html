@@ -31,42 +31,28 @@ header {
 
 .logo-container {
   display: flex;
-  gap: 20px;
+  align-items: center;
   margin-right: 25px;
 }
 
-.logo {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(45deg, #ff6b6b, #feca57);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: 700;
-  color: white;
-  animation: flip 3s infinite ease-in-out;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  position: relative;
-  overflow: hidden;
+.logo-svg {
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+  animation: gentle-bounce 3s infinite ease-in-out;
 }
 
-.logo:nth-child(2) {
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
-  animation-delay: 1.5s;
-}
-
-.logo::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transform: translateX(-100%);
-  animation: shine 2s infinite;
+@keyframes gentle-bounce {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  25% { 
+    transform: translateY(-5px) rotate(2deg); 
+  }
+  50% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  75% { 
+    transform: translateY(-3px) rotate(-1deg); 
+  }
 }
 
 @keyframes flip {
@@ -364,8 +350,41 @@ button:active {
 <body>
   <header>
     <div class="logo-container">
-      <div class="logo">⭐</div>
-      <div class="logo">⭐</div>
+      <svg class="logo-svg" width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="crownGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FF8C00;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="gemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FF69B4;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#8A2BE2;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        
+        <!-- Crown base -->
+        <path d="M15 70 L85 70 L80 80 L20 80 Z" fill="url(#crownGradient)" stroke="#B8860B" stroke-width="1"/>
+        
+        <!-- Crown points -->
+        <path d="M15 70 L25 45 L35 60 L50 30 L65 60 L75 45 L85 70 Z" fill="url(#crownGradient)" stroke="#B8860B" stroke-width="1"/>
+        
+        <!-- Center gem -->
+        <ellipse cx="50" cy="45" rx="6" ry="8" fill="url(#gemGradient)" stroke="#4B0082" stroke-width="1"/>
+        
+        <!-- Side gems -->
+        <ellipse cx="30" cy="55" rx="4" ry="5" fill="#00CED1" stroke="#008B8B" stroke-width="1"/>
+        <ellipse cx="70" cy="55" rx="4" ry="5" fill="#00CED1" stroke="#008B8B" stroke-width="1"/>
+        
+        <!-- Small decorative gems -->
+        <circle cx="40" cy="50" r="2" fill="#32CD32"/>
+        <circle cx="60" cy="50" r="2" fill="#32CD32"/>
+        
+        <!-- Crown highlights -->
+        <path d="M20 65 L25 50 L30 65" fill="none" stroke="#FFFF00" stroke-width="1" opacity="0.7"/>
+        <path d="M45 35 L50 25 L55 35" fill="none" stroke="#FFFF00" stroke-width="1" opacity="0.7"/>
+        <path d="M70 65 L75 50 L80 65" fill="none" stroke="#FFFF00" stroke-width="1" opacity="0.7"/>
+      </svg>
     </div>
     <h1>Pageant Scoring – Judge 1</h1>
   </header>
@@ -936,5 +955,5 @@ button:active {
       updateProgressIndicators();
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971fc1c486d9f92a',t:'MTc1NTY3MDUzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971fd95b901b6023',t:'MTc1NTY3MTUwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
