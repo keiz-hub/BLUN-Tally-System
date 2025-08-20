@@ -3,93 +3,938 @@
 <head>
   <meta charset="UTF-8">
   <title>Pageant Scoring – Judge 1</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-body {
-  font-family: 'Poppins', sans-serif;
-  background: #f9f8f6;
-  margin: 0; padding: 0;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+}
+
 header {
-  background: #2e7d32;
-  color: white;
-  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
-header img {
-  height: 50px;
-  width: 50px;
-  background: #d7ccc8;
+
+.logo-container {
+  display: flex;
+  gap: 20px;
+  margin-right: 25px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, #ff6b6b, #feca57);
   border-radius: 50%;
-  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  animation: flip 3s infinite ease-in-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
 }
+
+.logo:nth-child(2) {
+  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  animation-delay: 1.5s;
+}
+
+.logo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  animation: shine 2s infinite;
+}
+
+@keyframes flip {
+  0%, 100% { transform: rotateY(0deg) scale(1); }
+  25% { transform: rotateY(90deg) scale(0.8); }
+  50% { transform: rotateY(180deg) scale(1); }
+  75% { transform: rotateY(270deg) scale(0.8); }
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d3748;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .container {
-  max-width: 900px;
-  margin: 30px auto;
-  background: white;
-  padding: 20px;
+  max-width: 1000px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav-tab {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  border: 2px solid #667eea;
+  padding: 12px 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 14px;
+  position: relative;
 }
-h1, h2 {
+
+.nav-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.nav-tab:hover:not(.active) {
+  background: rgba(102, 126, 234, 0.2);
+  transform: translateY(-1px);
+}
+
+.progress-indicator {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  background: #48bb78;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.progress-indicator.show {
+  opacity: 1;
+}
+
+.page {
+  display: none;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.page.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #2e7d32;
+  margin-bottom: 30px;
+  color: #2d3748;
+  font-size: 24px;
+  font-weight: 600;
+  position: relative;
 }
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
 table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
+
 th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  padding: 16px 20px;
   text-align: center;
+  border-bottom: 1px solid #e2e8f0;
 }
+
 th {
-  background: #d7ccc8;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
+
+td {
+  background: white;
+  transition: all 0.3s ease;
+}
+
+tr:hover td {
+  background: #f8fafc;
+  transform: scale(1.01);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.score-input {
+  width: 80px;
+  padding: 8px;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.score-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
 button {
-  background: #2e7d32;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+  padding: 14px 28px;
+  border-radius: 12px;
   cursor: pointer;
-  margin: 5px;
-  transition: 0.3s;
+  margin: 10px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  position: relative;
+  overflow: hidden;
 }
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+button:hover::before {
+  left: 100%;
+}
+
 button:hover {
-  background: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
 }
+
+button:active {
+  transform: translateY(0);
+}
+
 .controls {
   text-align: center;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.summary-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.summary-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.summary-card .score {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .logo-container {
+    margin-right: 0;
+  }
+  
+  header h1 {
+    font-size: 22px;
+  }
+  
+  .nav-tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .nav-tab {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  th, td {
+    padding: 12px 8px;
+    font-size: 14px;
+  }
+  
+  .score-input {
+    width: 60px;
+    padding: 6px;
+    font-size: 12px;
+  }
 }
 </style>
-  <script src="config.js"></script>
 </head>
 <body>
   <header>
-    <img alt="Logo Placeholder">
+    <div class="logo-container">
+      <div class="logo">👑</div>
+      <div class="logo">⭐</div>
+    </div>
     <h1>Pageant Scoring – Judge 1</h1>
   </header>
+  
   <div class="container">
-    
-    <h2>Judge 1 Scoring Sheet</h2>
-    <table id="judgeTable">
-      <thead><tr><th>Contestant</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <div class="controls">
-      <button onclick="exportCSV()">Export My Scores</button>
+    <div class="nav-tabs">
+      <div class="nav-tab active" onclick="showPage('evening-gown')">
+        Evening Gown
+        <div class="progress-indicator">✓</div>
+      </div>
+      <div class="nav-tab" onclick="showPage('talent')">
+        Talent
+        <div class="progress-indicator">✓</div>
+      </div>
+      <div class="nav-tab" onclick="showPage('interview')">
+        Interview
+        <div class="progress-indicator">✓</div>
+      </div>
+      <div class="nav-tab" onclick="showPage('swimwear')">
+        Swimwear
+        <div class="progress-indicator">✓</div>
+      </div>
+      <div class="nav-tab" onclick="showPage('question')">
+        On-Stage Question
+        <div class="progress-indicator">✓</div>
+      </div>
+      <div class="nav-tab" onclick="showPage('summary')">
+        📊 Summary
+        <div class="progress-indicator">✓</div>
+      </div>
     </div>
-    <script>const JUDGE_NAME = "Judge 1";</script>
-    <script src="judge.js"></script>
+
+    <!-- Evening Gown Page -->
+    <div id="evening-gown" class="page active">
+      <h2>Evening Gown Competition</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Contestant</th>
+            <th>Elegance</th>
+            <th>Fit</th>
+            <th>Style</th>
+            <th>Poise</th>
+            <th>Overall</th>
+            <th>Category Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Contestant 1</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="1" data-subcategory="elegance"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="1" data-subcategory="fit"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="1" data-subcategory="style"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="1" data-subcategory="poise"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="1" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="1" data-category="evening-gown">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 2</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="2" data-subcategory="elegance"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="2" data-subcategory="fit"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="2" data-subcategory="style"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="2" data-subcategory="poise"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="2" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="2" data-category="evening-gown">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 3</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="3" data-subcategory="elegance"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="3" data-subcategory="fit"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="3" data-subcategory="style"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="3" data-subcategory="poise"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="evening-gown" data-contestant="3" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="3" data-category="evening-gown">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Talent Page -->
+    <div id="talent" class="page">
+      <h2>Talent Competition</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Contestant</th>
+            <th>Skill</th>
+            <th>Creativity</th>
+            <th>Stage Presence</th>
+            <th>Entertainment</th>
+            <th>Overall</th>
+            <th>Category Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Contestant 1</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="1" data-subcategory="skill"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="1" data-subcategory="creativity"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="1" data-subcategory="stage-presence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="1" data-subcategory="entertainment"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="1" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="1" data-category="talent">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 2</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="2" data-subcategory="skill"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="2" data-subcategory="creativity"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="2" data-subcategory="stage-presence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="2" data-subcategory="entertainment"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="2" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="2" data-category="talent">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 3</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="3" data-subcategory="skill"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="3" data-subcategory="creativity"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="3" data-subcategory="stage-presence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="3" data-subcategory="entertainment"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="talent" data-contestant="3" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="3" data-category="talent">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Interview Page -->
+    <div id="interview" class="page">
+      <h2>Interview Competition</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Contestant</th>
+            <th>Confidence</th>
+            <th>Articulation</th>
+            <th>Content</th>
+            <th>Personality</th>
+            <th>Overall</th>
+            <th>Category Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Contestant 1</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="1" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="1" data-subcategory="articulation"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="1" data-subcategory="content"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="1" data-subcategory="personality"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="1" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="1" data-category="interview">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 2</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="2" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="2" data-subcategory="articulation"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="2" data-subcategory="content"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="2" data-subcategory="personality"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="2" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="2" data-category="interview">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 3</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="3" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="3" data-subcategory="articulation"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="3" data-subcategory="content"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="3" data-subcategory="personality"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="interview" data-contestant="3" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="3" data-category="interview">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Swimwear Page -->
+    <div id="swimwear" class="page">
+      <h2>Swimwear Competition</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Contestant</th>
+            <th>Fitness</th>
+            <th>Confidence</th>
+            <th>Posture</th>
+            <th>Stage Walk</th>
+            <th>Overall</th>
+            <th>Category Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Contestant 1</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="1" data-subcategory="fitness"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="1" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="1" data-subcategory="posture"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="1" data-subcategory="stage-walk"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="1" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="1" data-category="swimwear">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 2</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="2" data-subcategory="fitness"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="2" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="2" data-subcategory="posture"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="2" data-subcategory="stage-walk"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="2" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="2" data-category="swimwear">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 3</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="3" data-subcategory="fitness"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="3" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="3" data-subcategory="posture"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="3" data-subcategory="stage-walk"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="swimwear" data-contestant="3" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="3" data-category="swimwear">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- On-Stage Question Page -->
+    <div id="question" class="page">
+      <h2>On-Stage Question</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Contestant</th>
+            <th>Quick Thinking</th>
+            <th>Clarity</th>
+            <th>Relevance</th>
+            <th>Confidence</th>
+            <th>Overall</th>
+            <th>Category Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Contestant 1</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="1" data-subcategory="quick-thinking"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="1" data-subcategory="clarity"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="1" data-subcategory="relevance"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="1" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="1" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="1" data-category="question">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 2</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="2" data-subcategory="quick-thinking"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="2" data-subcategory="clarity"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="2" data-subcategory="relevance"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="2" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="2" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="2" data-category="question">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 3</td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="3" data-subcategory="quick-thinking"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="3" data-subcategory="clarity"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="3" data-subcategory="relevance"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="3" data-subcategory="confidence"></td>
+            <td><input type="number" min="1" max="10" placeholder="1-10" class="score-input" data-category="question" data-contestant="3" data-subcategory="overall"></td>
+            <td class="category-total" data-contestant="3" data-category="question">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Summary Page -->
+    <div id="summary" class="page">
+      <h2>Competition Summary</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h3>Contestant 1</h3>
+          <div class="score" id="total-1">0</div>
+        </div>
+        <div class="summary-card">
+          <h3>Contestant 2</h3>
+          <div class="score" id="total-2">0</div>
+        </div>
+        <div class="summary-card">
+          <h3>Contestant 3</h3>
+          <div class="score" id="total-3">0</div>
+        </div>
+      </div>
+      
+      <table style="margin-top: 30px;">
+        <thead>
+          <tr>
+            <th>Contestant</th>
+            <th>Evening Gown</th>
+            <th>Talent</th>
+            <th>Interview</th>
+            <th>Swimwear</th>
+            <th>On-Stage Question</th>
+            <th>Grand Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Contestant 1</td>
+            <td id="summary-evening-gown-1">0</td>
+            <td id="summary-talent-1">0</td>
+            <td id="summary-interview-1">0</td>
+            <td id="summary-swimwear-1">0</td>
+            <td id="summary-question-1">0</td>
+            <td id="summary-total-1">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 2</td>
+            <td id="summary-evening-gown-2">0</td>
+            <td id="summary-talent-2">0</td>
+            <td id="summary-interview-2">0</td>
+            <td id="summary-swimwear-2">0</td>
+            <td id="summary-question-2">0</td>
+            <td id="summary-total-2">0</td>
+          </tr>
+          <tr>
+            <td>Contestant 3</td>
+            <td id="summary-evening-gown-3">0</td>
+            <td id="summary-talent-3">0</td>
+            <td id="summary-interview-3">0</td>
+            <td id="summary-swimwear-3">0</td>
+            <td id="summary-question-3">0</td>
+            <td id="summary-total-3">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     
+    <div class="controls">
+      <button onclick="exportCSV()">📊 Export Complete Scores</button>
+      <button onclick="clearAllScores()">🔄 Clear All Scores</button>
+    </div>
   </div>
-</body>
+
+  <script>
+    const JUDGE_NAME = "Judge 1";
+    let scores = {};
+
+    // Initialize scores object
+    function initializeScores() {
+      const categories = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
+      const subcategories = {
+        'evening-gown': ['elegance', 'fit', 'style', 'poise', 'overall'],
+        'talent': ['skill', 'creativity', 'stage-presence', 'entertainment', 'overall'],
+        'interview': ['confidence', 'articulation', 'content', 'personality', 'overall'],
+        'swimwear': ['fitness', 'confidence', 'posture', 'stage-walk', 'overall'],
+        'question': ['quick-thinking', 'clarity', 'relevance', 'confidence', 'overall']
+      };
+
+      for (let contestant = 1; contestant <= 3; contestant++) {
+        scores[contestant] = {};
+        categories.forEach(category => {
+          scores[contestant][category] = {};
+          subcategories[category].forEach(subcategory => {
+            scores[contestant][category][subcategory] = 0;
+          });
+        });
+      }
+    }
+
+    // Show specific page
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected page
+      document.getElementById(pageId).classList.add('active');
+      
+      // Add active class to selected tab
+      event.target.classList.add('active');
+      
+      // Update summary if on summary page
+      if (pageId === 'summary') {
+        updateSummary();
+      }
+    }
+
+    // Calculate category total
+    function calculateCategoryTotal(contestant, category) {
+      let total = 0;
+      Object.values(scores[contestant][category]).forEach(score => {
+        total += parseFloat(score) || 0;
+      });
+      return total;
+    }
+
+    // Calculate grand total
+    function calculateGrandTotal(contestant) {
+      let total = 0;
+      Object.keys(scores[contestant]).forEach(category => {
+        total += calculateCategoryTotal(contestant, category);
+      });
+      return total;
+    }
+
+    // Update progress indicators
+    function updateProgressIndicators() {
+      const categories = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
+      
+      categories.forEach(category => {
+        let hasScores = false;
+        for (let contestant = 1; contestant <= 3; contestant++) {
+          Object.values(scores[contestant][category]).forEach(score => {
+            if (parseFloat(score) > 0) {
+              hasScores = true;
+            }
+          });
+        }
+        
+        const tab = document.querySelector(`[onclick="showPage('${category}')"] .progress-indicator`);
+        if (tab) {
+          if (hasScores) {
+            tab.classList.add('show');
+          } else {
+            tab.classList.remove('show');
+          }
+        }
+      });
+    }
+
+    // Update summary page
+    function updateSummary() {
+      for (let contestant = 1; contestant <= 3; contestant++) {
+        const categories = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
+        
+        categories.forEach(category => {
+          const categoryTotal = calculateCategoryTotal(contestant, category);
+          const element = document.getElementById(`summary-${category}-${contestant}`);
+          if (element) {
+            element.textContent = categoryTotal.toFixed(1);
+          }
+        });
+        
+        const grandTotal = calculateGrandTotal(contestant);
+        const totalElement = document.getElementById(`summary-total-${contestant}`);
+        const cardElement = document.getElementById(`total-${contestant}`);
+        
+        if (totalElement) totalElement.textContent = grandTotal.toFixed(1);
+        if (cardElement) cardElement.textContent = grandTotal.toFixed(1);
+      }
+    }
+
+    // Handle score input
+    document.addEventListener('input', function(e) {
+      if (e.target.classList.contains('score-input')) {
+        const contestant = e.target.dataset.contestant;
+        const category = e.target.dataset.category;
+        const subcategory = e.target.dataset.subcategory;
+        const value = parseFloat(e.target.value) || 0;
+        
+        // Update scores object
+        scores[contestant][category][subcategory] = value;
+        
+        // Update category total
+        const categoryTotal = calculateCategoryTotal(contestant, category);
+        const totalElement = document.querySelector(`.category-total[data-contestant="${contestant}"][data-category="${category}"]`);
+        if (totalElement) {
+          totalElement.textContent = categoryTotal.toFixed(1);
+        }
+        
+        // Visual feedback
+        e.target.style.borderColor = '#667eea';
+        setTimeout(() => {
+          e.target.style.borderColor = '#e2e8f0';
+        }, 1000);
+        
+        // Update progress indicators
+        updateProgressIndicators();
+        
+        // Update summary if on summary page
+        if (document.getElementById('summary').classList.contains('active')) {
+          updateSummary();
+        }
+      }
+    });
+
+    // Export CSV
+    function exportCSV() {
+      let csvContent = 'Contestant,';
+      
+      // Headers
+      const categories = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
+      const subcategoryNames = {
+        'evening-gown': ['Elegance', 'Fit', 'Style', 'Poise', 'Overall'],
+        'talent': ['Skill', 'Creativity', 'Stage Presence', 'Entertainment', 'Overall'],
+        'interview': ['Confidence', 'Articulation', 'Content', 'Personality', 'Overall'],
+        'swimwear': ['Fitness', 'Confidence', 'Posture', 'Stage Walk', 'Overall'],
+        'question': ['Quick Thinking', 'Clarity', 'Relevance', 'Confidence', 'Overall']
+      };
+      
+      const categoryNames = {
+        'evening-gown': 'Evening Gown',
+        'talent': 'Talent',
+        'interview': 'Interview',
+        'swimwear': 'Swimwear',
+        'question': 'On-Stage Question'
+      };
+      
+      categories.forEach(category => {
+        subcategoryNames[category].forEach(subcategory => {
+          csvContent += `${categoryNames[category]} - ${subcategory},`;
+        });
+      });
+      csvContent += 'Grand Total\n';
+      
+      // Data rows
+      for (let contestant = 1; contestant <= 3; contestant++) {
+        csvContent += `Contestant ${contestant},`;
+        
+        categories.forEach(category => {
+          Object.values(scores[contestant][category]).forEach(score => {
+            csvContent += `${score || 0},`;
+          });
+        });
+        
+        const grandTotal = calculateGrandTotal(contestant);
+        csvContent += `${grandTotal.toFixed(1)}\n`;
+      }
+      
+      // Download
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${JUDGE_NAME}_complete_scores.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      
+      // Success feedback
+      const button = event.target;
+      const originalText = button.innerHTML;
+      button.innerHTML = '✅ Exported!';
+      button.style.background = '#48bb78';
+      setTimeout(() => {
+        button.innerHTML = originalText;
+        button.style.background = '';
+      }, 2000);
+    }
+
+    // Clear all scores
+    function clearAllScores() {
+      if (confirm('Are you sure you want to clear all scores from all categories?')) {
+        document.querySelectorAll('.score-input').forEach(input => {
+          input.value = '';
+        });
+        
+        document.querySelectorAll('.category-total').forEach(cell => {
+          cell.textContent = '0';
+        });
+        
+        initializeScores();
+        updateProgressIndicators();
+        updateSummary();
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeScores();
+      updateProgressIndicators();
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971fc1c486d9f92a',t:'MTc1NTY3MDUzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
