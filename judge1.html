@@ -30,78 +30,7 @@ header {
   gap: 25px;
 }
 
-.header-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
 
-.judge-selector {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background: rgba(102, 126, 234, 0.1);
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: 2px solid rgba(102, 126, 234, 0.2);
-}
-
-.judge-selector label {
-  font-weight: 600;
-  color: #667eea;
-  font-size: 14px;
-}
-
-.judge-selector select {
-  padding: 8px 12px;
-  border: 2px solid #667eea;
-  border-radius: 8px;
-  background: white;
-  color: #333;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.judge-selector select:focus {
-  outline: none;
-  border-color: #764ba2;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.add-judge-btn {
-  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 12px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
-}
-
-.add-judge-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
-}
-
-.current-judge {
-  font-size: 14px;
-  color: #667eea;
-  font-weight: 500;
-  background: rgba(102, 126, 234, 0.1);
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(102, 126, 234, 0.2);
-}
-
-.current-judge span {
-  font-weight: 700;
-  color: #764ba2;
-}
 
 .logo-container {
   display: flex;
@@ -394,19 +323,8 @@ button:active {
     margin-right: 0;
   }
   
-  .header-content h1 {
+  header h1 {
     font-size: 22px;
-  }
-  
-  .judge-selector {
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
-  }
-  
-  .judge-selector select {
-    width: 100%;
-    max-width: 200px;
   }
   
   .nav-tabs {
@@ -449,26 +367,7 @@ button:active {
     <div class="logo-container">
       <img src="BLUN-NEW-LOGO-2025 HD.png" alt="BLUN Logo" class="logo-svg" width="80" height="80" onerror="this.src=''; this.alt='Logo failed to load'; this.style.display='none';">
     </div>
-    <div class="header-content">
-      <h1>Pageant Scoring System</h1>
-      <div class="judge-selector">
-        <label for="judgeSelect">Select Judge:</label>
-        <select id="judgeSelect" onchange="switchJudge()">
-          <option value="Judge 1">Judge 1</option>
-          <option value="Judge 2">Judge 2</option>
-          <option value="Judge 3">Judge 3</option>
-          <option value="Judge 4">Judge 4</option>
-          <option value="Judge 5">Judge 5</option>
-          <option value="Judge 6">Judge 6</option>
-          <option value="Judge 7">Judge 7</option>
-          <option value="Judge 8">Judge 8</option>
-          <option value="Judge 9">Judge 9</option>
-          <option value="Judge 10">Judge 10</option>
-        </select>
-        <button onclick="addNewJudge()" class="add-judge-btn">+ Add Judge</button>
-      </div>
-      <div class="current-judge">Currently scoring as: <span id="currentJudgeName">Judge 1</span></div>
-    </div>
+    <h1>Pageant Scoring – Judge 1</h1>
   </header>
   
   <div class="container">
@@ -797,13 +696,11 @@ button:active {
     </div>
     
     <div class="controls">
-      <button onclick="exportCSV()">📊 Export Current Judge Scores</button>
-      <button onclick="exportAllJudges()">📋 Export All Judges Scores</button>
-      <button onclick="clearAllScores()">🔄 Clear Current Judge Scores</button>
-      <button onclick="clearAllJudgesData()" style="background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);">⚠️ Clear All Judges Data</button>
+      <button onclick="exportCSV()">📊 Export Complete Scores</button>
+      <button onclick="clearAllScores()">🔄 Clear All Scores</button>
     </div>
   </div>
 
   <script src="pageant-scoring.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971ff602d18481c0',t:'MTc1NTY3MjY3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97200538c1b65ff8',t:'MTc1NTY3MzI5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
