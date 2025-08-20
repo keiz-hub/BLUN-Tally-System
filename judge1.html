@@ -350,41 +350,7 @@ button:active {
 <body>
   <header>
     <div class="logo-container">
-      <svg class="logo-svg" width="80" height="80" viewBox="0 0 100 100" xmlns="BLUN-NEW-LOGO-2025 HD.png">
-        <defs>
-          <linearGradient id="crownGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
-            <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#FF8C00;stop-opacity:1" />
-          </linearGradient>
-          <linearGradient id="gemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#FF69B4;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#8A2BE2;stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        
-        <!-- Crown base -->
-        <path d="M15 70 L85 70 L80 80 L20 80 Z" fill="url(#crownGradient)" stroke="#B8860B" stroke-width="1"/>
-        
-        <!-- Crown points -->
-        <path d="M15 70 L25 45 L35 60 L50 30 L65 60 L75 45 L85 70 Z" fill="url(#crownGradient)" stroke="#B8860B" stroke-width="1"/>
-        
-        <!-- Center gem -->
-        <ellipse cx="50" cy="45" rx="6" ry="8" fill="url(#gemGradient)" stroke="#4B0082" stroke-width="1"/>
-        
-        <!-- Side gems -->
-        <ellipse cx="30" cy="55" rx="4" ry="5" fill="#00CED1" stroke="#008B8B" stroke-width="1"/>
-        <ellipse cx="70" cy="55" rx="4" ry="5" fill="#00CED1" stroke="#008B8B" stroke-width="1"/>
-        
-        <!-- Small decorative gems -->
-        <circle cx="40" cy="50" r="2" fill="#32CD32"/>
-        <circle cx="60" cy="50" r="2" fill="#32CD32"/>
-        
-        <!-- Crown highlights -->
-        <path d="M20 65 L25 50 L30 65" fill="none" stroke="#FFFF00" stroke-width="1" opacity="0.7"/>
-        <path d="M45 35 L50 25 L55 35" fill="none" stroke="#FFFF00" stroke-width="1" opacity="0.7"/>
-        <path d="M70 65 L75 50 L80 65" fill="none" stroke="#FFFF00" stroke-width="1" opacity="0.7"/>
-      </svg>
+      <img src="BLUN-NEW-LOGO-2025 HD.png" alt="BLUN Logo" class="logo-svg" width="80" height="80" onerror="this.src=''; this.alt='Logo failed to load'; this.style.display='none';">
     </div>
     <h1>Pageant Scoring – Judge 1</h1>
   </header>
@@ -723,11 +689,40 @@ button:active {
   <script>
     const JUDGE_NAME = "Judge 1";
     let scores = {};
+    
+    // Configuration arrays for compatibility with your code
+    const contestants = ["Contestant 1", "Contestant 2", "Contestant 3"];
+    const categories = [
+      { name: "Evening Gown - Elegance", min: 1, max: 10 },
+      { name: "Evening Gown - Fit", min: 1, max: 10 },
+      { name: "Evening Gown - Style", min: 1, max: 10 },
+      { name: "Evening Gown - Poise", min: 1, max: 10 },
+      { name: "Evening Gown - Overall", min: 1, max: 10 },
+      { name: "Talent - Skill", min: 1, max: 10 },
+      { name: "Talent - Creativity", min: 1, max: 10 },
+      { name: "Talent - Stage Presence", min: 1, max: 10 },
+      { name: "Talent - Entertainment", min: 1, max: 10 },
+      { name: "Talent - Overall", min: 1, max: 10 },
+      { name: "Interview - Confidence", min: 1, max: 10 },
+      { name: "Interview - Articulation", min: 1, max: 10 },
+      { name: "Interview - Content", min: 1, max: 10 },
+      { name: "Interview - Personality", min: 1, max: 10 },
+      { name: "Interview - Overall", min: 1, max: 10 },
+      { name: "Swimwear - Fitness", min: 1, max: 10 },
+      { name: "Swimwear - Confidence", min: 1, max: 10 },
+      { name: "Swimwear - Posture", min: 1, max: 10 },
+      { name: "Swimwear - Stage Walk", min: 1, max: 10 },
+      { name: "Swimwear - Overall", min: 1, max: 10 },
+      { name: "On-Stage Question - Quick Thinking", min: 1, max: 10 },
+      { name: "On-Stage Question - Clarity", min: 1, max: 10 },
+      { name: "On-Stage Question - Relevance", min: 1, max: 10 },
+      { name: "On-Stage Question - Confidence", min: 1, max: 10 },
+      { name: "On-Stage Question - Overall", min: 1, max: 10 }
+    ];
 
-    // Initialize scores object
+    // Initialize scores object with localStorage support
     function initializeScores() {
-      const categories = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
-      const subcategories = {
+      const categoryMap = {
         'evening-gown': ['elegance', 'fit', 'style', 'poise', 'overall'],
         'talent': ['skill', 'creativity', 'stage-presence', 'entertainment', 'overall'],
         'interview': ['confidence', 'articulation', 'content', 'personality', 'overall'],
@@ -737,13 +732,36 @@ button:active {
 
       for (let contestant = 1; contestant <= 3; contestant++) {
         scores[contestant] = {};
-        categories.forEach(category => {
+        Object.keys(categoryMap).forEach(category => {
           scores[contestant][category] = {};
-          subcategories[category].forEach(subcategory => {
-            scores[contestant][category][subcategory] = 0;
+          categoryMap[category].forEach(subcategory => {
+            // Load from localStorage if available
+            const storageKey = `${JUDGE_NAME}_Contestant ${contestant}_${category}_${subcategory}`;
+            const savedValue = localStorage.getItem(storageKey);
+            scores[contestant][category][subcategory] = savedValue ? parseFloat(savedValue) : 0;
           });
         });
       }
+      
+      // Load saved values into inputs
+      loadSavedValues();
+    }
+
+    // Load saved values into input fields
+    function loadSavedValues() {
+      document.querySelectorAll('.score-input').forEach(input => {
+        const contestant = input.dataset.contestant;
+        const category = input.dataset.category;
+        const subcategory = input.dataset.subcategory;
+        const storageKey = `${JUDGE_NAME}_Contestant ${contestant}_${category}_${subcategory}`;
+        const savedValue = localStorage.getItem(storageKey);
+        if (savedValue) {
+          input.value = savedValue;
+        }
+      });
+      
+      // Update all totals after loading
+      updateAllTotals();
     }
 
     // Show specific page
@@ -788,11 +806,30 @@ button:active {
       return total;
     }
 
+    // Update all totals
+    function updateAllTotals() {
+      // Update category totals
+      document.querySelectorAll('.category-total').forEach(cell => {
+        const contestant = cell.dataset.contestant;
+        const category = cell.dataset.category;
+        const total = calculateCategoryTotal(contestant, category);
+        cell.textContent = total.toFixed(1);
+      });
+      
+      // Update progress indicators
+      updateProgressIndicators();
+      
+      // Update summary if visible
+      if (document.getElementById('summary').classList.contains('active')) {
+        updateSummary();
+      }
+    }
+
     // Update progress indicators
     function updateProgressIndicators() {
-      const categories = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
+      const categoryList = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
       
-      categories.forEach(category => {
+      categoryList.forEach(category => {
         let hasScores = false;
         for (let contestant = 1; contestant <= 3; contestant++) {
           Object.values(scores[contestant][category]).forEach(score => {
@@ -816,9 +853,9 @@ button:active {
     // Update summary page
     function updateSummary() {
       for (let contestant = 1; contestant <= 3; contestant++) {
-        const categories = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
+        const categoryList = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
         
-        categories.forEach(category => {
+        categoryList.forEach(category => {
           const categoryTotal = calculateCategoryTotal(contestant, category);
           const element = document.getElementById(`summary-${category}-${contestant}`);
           if (element) {
@@ -835,16 +872,30 @@ button:active {
       }
     }
 
-    // Handle score input
+    // Handle score input with localStorage and validation
     document.addEventListener('input', function(e) {
       if (e.target.classList.contains('score-input')) {
         const contestant = e.target.dataset.contestant;
         const category = e.target.dataset.category;
         const subcategory = e.target.dataset.subcategory;
-        const value = parseFloat(e.target.value) || 0;
+        let value = parseFloat(e.target.value) || 0;
+        
+        // Validate input range (1-10)
+        if (value < 1 && value !== 0) {
+          value = 1;
+          e.target.value = 1;
+        }
+        if (value > 10) {
+          value = 10;
+          e.target.value = 10;
+        }
         
         // Update scores object
         scores[contestant][category][subcategory] = value;
+        
+        // Save to localStorage
+        const storageKey = `${JUDGE_NAME}_Contestant ${contestant}_${category}_${subcategory}`;
+        localStorage.setItem(storageKey, value.toString());
         
         // Update category total
         const categoryTotal = calculateCategoryTotal(contestant, category);
@@ -869,57 +920,42 @@ button:active {
       }
     });
 
-    // Export CSV
+    // Export CSV function (enhanced version)
     function exportCSV() {
-      let csvContent = 'Contestant,';
-      
-      // Headers
-      const categories = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
-      const subcategoryNames = {
-        'evening-gown': ['Elegance', 'Fit', 'Style', 'Poise', 'Overall'],
-        'talent': ['Skill', 'Creativity', 'Stage Presence', 'Entertainment', 'Overall'],
-        'interview': ['Confidence', 'Articulation', 'Content', 'Personality', 'Overall'],
-        'swimwear': ['Fitness', 'Confidence', 'Posture', 'Stage Walk', 'Overall'],
-        'question': ['Quick Thinking', 'Clarity', 'Relevance', 'Confidence', 'Overall']
-      };
-      
-      const categoryNames = {
-        'evening-gown': 'Evening Gown',
-        'talent': 'Talent',
-        'interview': 'Interview',
-        'swimwear': 'Swimwear',
-        'question': 'On-Stage Question'
-      };
-      
-      categories.forEach(category => {
-        subcategoryNames[category].forEach(subcategory => {
-          csvContent += `${categoryNames[category]} - ${subcategory},`;
-        });
-      });
-      csvContent += 'Grand Total\n';
-      
-      // Data rows
+      let rows = [];
+      let header = ["Contestant", ...categories.map(c => c.name), "Total"];
+      rows.push(header);
+
+      // Build data rows
       for (let contestant = 1; contestant <= 3; contestant++) {
-        csvContent += `Contestant ${contestant},`;
+        let row = [];
+        row.push(`Contestant ${contestant}`);
+        let sum = 0;
         
-        categories.forEach(category => {
-          Object.values(scores[contestant][category]).forEach(score => {
-            csvContent += `${score || 0},`;
-          });
+        categories.forEach(cat => {
+          // Extract category and subcategory from name
+          const parts = cat.name.split(' - ');
+          const categoryName = parts[0].toLowerCase().replace(/\s+/g, '-').replace('on-stage-question', 'question');
+          const subcategoryName = parts[1].toLowerCase().replace(/\s+/g, '-');
+          
+          const value = scores[contestant][categoryName] && scores[contestant][categoryName][subcategoryName] 
+            ? scores[contestant][categoryName][subcategoryName] 
+            : 0;
+          
+          row.push(value);
+          sum += parseFloat(value);
         });
         
-        const grandTotal = calculateGrandTotal(contestant);
-        csvContent += `${grandTotal.toFixed(1)}\n`;
+        row.push(sum.toFixed(2));
+        rows.push(row);
       }
-      
-      // Download
-      const blob = new Blob([csvContent], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${JUDGE_NAME}_complete_scores.csv`;
-      a.click();
-      window.URL.revokeObjectURL(url);
+
+      let csvContent = rows.map(e => e.join(",")).join("\n");
+      let blob = new Blob([csvContent], { type: "text/csv" });
+      let link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${JUDGE_NAME}_complete_scores.csv`;
+      link.click();
       
       // Success feedback
       const button = event.target;
@@ -935,25 +971,49 @@ button:active {
     // Clear all scores
     function clearAllScores() {
       if (confirm('Are you sure you want to clear all scores from all categories?')) {
+        // Clear input fields
         document.querySelectorAll('.score-input').forEach(input => {
           input.value = '';
         });
         
+        // Clear category totals
         document.querySelectorAll('.category-total').forEach(cell => {
           cell.textContent = '0';
         });
         
+        // Clear localStorage
+        categories.forEach(cat => {
+          contestants.forEach(contestant => {
+            const parts = cat.name.split(' - ');
+            const categoryName = parts[0].toLowerCase().replace(/\s+/g, '-').replace('on-stage-question', 'question');
+            const subcategoryName = parts[1].toLowerCase().replace(/\s+/g, '-');
+            const storageKey = `${JUDGE_NAME}_${contestant}_${categoryName}_${subcategoryName}`;
+            localStorage.removeItem(storageKey);
+          });
+        });
+        
+        // Reset scores object
         initializeScores();
         updateProgressIndicators();
         updateSummary();
       }
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize on page load (compatible with both DOMContentLoaded and window.onload)
+    window.onload = function() {
       initializeScores();
       updateProgressIndicators();
+      updateAllTotals();
+    };
+
+    // Backup initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!scores || Object.keys(scores).length === 0) {
+        initializeScores();
+        updateProgressIndicators();
+        updateAllTotals();
+      }
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971fd95b901b6023',t:'MTc1NTY3MTUwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971fe838f0966023',t:'MTc1NTY3MjExMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
