@@ -27,6 +27,80 @@ header {
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  gap: 25px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.judge-selector {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+.judge-selector label {
+  font-weight: 600;
+  color: #667eea;
+  font-size: 14px;
+}
+
+.judge-selector select {
+  padding: 8px 12px;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.judge-selector select:focus {
+  outline: none;
+  border-color: #764ba2;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.add-judge-btn {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+}
+
+.add-judge-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+}
+
+.current-judge {
+  font-size: 14px;
+  color: #667eea;
+  font-weight: 500;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.current-judge span {
+  font-weight: 700;
+  color: #764ba2;
 }
 
 .logo-container {
@@ -320,8 +394,19 @@ button:active {
     margin-right: 0;
   }
   
-  header h1 {
+  .header-content h1 {
     font-size: 22px;
+  }
+  
+  .judge-selector {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .judge-selector select {
+    width: 100%;
+    max-width: 200px;
   }
   
   .nav-tabs {
@@ -344,6 +429,18 @@ button:active {
     padding: 6px;
     font-size: 12px;
   }
+  
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .controls button {
+    width: 100%;
+    max-width: 300px;
+  }
 }
 </style>
 </head>
@@ -352,7 +449,26 @@ button:active {
     <div class="logo-container">
       <img src="BLUN-NEW-LOGO-2025 HD.png" alt="BLUN Logo" class="logo-svg" width="80" height="80" onerror="this.src=''; this.alt='Logo failed to load'; this.style.display='none';">
     </div>
-    <h1>Pageant Scoring – Judge 1</h1>
+    <div class="header-content">
+      <h1>Pageant Scoring System</h1>
+      <div class="judge-selector">
+        <label for="judgeSelect">Select Judge:</label>
+        <select id="judgeSelect" onchange="switchJudge()">
+          <option value="Judge 1">Judge 1</option>
+          <option value="Judge 2">Judge 2</option>
+          <option value="Judge 3">Judge 3</option>
+          <option value="Judge 4">Judge 4</option>
+          <option value="Judge 5">Judge 5</option>
+          <option value="Judge 6">Judge 6</option>
+          <option value="Judge 7">Judge 7</option>
+          <option value="Judge 8">Judge 8</option>
+          <option value="Judge 9">Judge 9</option>
+          <option value="Judge 10">Judge 10</option>
+        </select>
+        <button onclick="addNewJudge()" class="add-judge-btn">+ Add Judge</button>
+      </div>
+      <div class="current-judge">Currently scoring as: <span id="currentJudgeName">Judge 1</span></div>
+    </div>
   </header>
   
   <div class="container">
@@ -681,339 +797,13 @@ button:active {
     </div>
     
     <div class="controls">
-      <button onclick="exportCSV()">📊 Export Complete Scores</button>
-      <button onclick="clearAllScores()">🔄 Clear All Scores</button>
+      <button onclick="exportCSV()">📊 Export Current Judge Scores</button>
+      <button onclick="exportAllJudges()">📋 Export All Judges Scores</button>
+      <button onclick="clearAllScores()">🔄 Clear Current Judge Scores</button>
+      <button onclick="clearAllJudgesData()" style="background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);">⚠️ Clear All Judges Data</button>
     </div>
   </div>
 
-  <script>
-    const JUDGE_NAME = "Judge 1";
-    let scores = {};
-    
-    // Configuration arrays for compatibility with your code
-    const contestants = ["Contestant 1", "Contestant 2", "Contestant 3"];
-    const categories = [
-      { name: "Evening Gown - Elegance", min: 1, max: 10 },
-      { name: "Evening Gown - Fit", min: 1, max: 10 },
-      { name: "Evening Gown - Style", min: 1, max: 10 },
-      { name: "Evening Gown - Poise", min: 1, max: 10 },
-      { name: "Evening Gown - Overall", min: 1, max: 10 },
-      { name: "Talent - Skill", min: 1, max: 10 },
-      { name: "Talent - Creativity", min: 1, max: 10 },
-      { name: "Talent - Stage Presence", min: 1, max: 10 },
-      { name: "Talent - Entertainment", min: 1, max: 10 },
-      { name: "Talent - Overall", min: 1, max: 10 },
-      { name: "Interview - Confidence", min: 1, max: 10 },
-      { name: "Interview - Articulation", min: 1, max: 10 },
-      { name: "Interview - Content", min: 1, max: 10 },
-      { name: "Interview - Personality", min: 1, max: 10 },
-      { name: "Interview - Overall", min: 1, max: 10 },
-      { name: "Swimwear - Fitness", min: 1, max: 10 },
-      { name: "Swimwear - Confidence", min: 1, max: 10 },
-      { name: "Swimwear - Posture", min: 1, max: 10 },
-      { name: "Swimwear - Stage Walk", min: 1, max: 10 },
-      { name: "Swimwear - Overall", min: 1, max: 10 },
-      { name: "On-Stage Question - Quick Thinking", min: 1, max: 10 },
-      { name: "On-Stage Question - Clarity", min: 1, max: 10 },
-      { name: "On-Stage Question - Relevance", min: 1, max: 10 },
-      { name: "On-Stage Question - Confidence", min: 1, max: 10 },
-      { name: "On-Stage Question - Overall", min: 1, max: 10 }
-    ];
-
-    // Initialize scores object with localStorage support
-    function initializeScores() {
-      const categoryMap = {
-        'evening-gown': ['elegance', 'fit', 'style', 'poise', 'overall'],
-        'talent': ['skill', 'creativity', 'stage-presence', 'entertainment', 'overall'],
-        'interview': ['confidence', 'articulation', 'content', 'personality', 'overall'],
-        'swimwear': ['fitness', 'confidence', 'posture', 'stage-walk', 'overall'],
-        'question': ['quick-thinking', 'clarity', 'relevance', 'confidence', 'overall']
-      };
-
-      for (let contestant = 1; contestant <= 3; contestant++) {
-        scores[contestant] = {};
-        Object.keys(categoryMap).forEach(category => {
-          scores[contestant][category] = {};
-          categoryMap[category].forEach(subcategory => {
-            // Load from localStorage if available
-            const storageKey = `${JUDGE_NAME}_Contestant ${contestant}_${category}_${subcategory}`;
-            const savedValue = localStorage.getItem(storageKey);
-            scores[contestant][category][subcategory] = savedValue ? parseFloat(savedValue) : 0;
-          });
-        });
-      }
-      
-      // Load saved values into inputs
-      loadSavedValues();
-    }
-
-    // Load saved values into input fields
-    function loadSavedValues() {
-      document.querySelectorAll('.score-input').forEach(input => {
-        const contestant = input.dataset.contestant;
-        const category = input.dataset.category;
-        const subcategory = input.dataset.subcategory;
-        const storageKey = `${JUDGE_NAME}_Contestant ${contestant}_${category}_${subcategory}`;
-        const savedValue = localStorage.getItem(storageKey);
-        if (savedValue) {
-          input.value = savedValue;
-        }
-      });
-      
-      // Update all totals after loading
-      updateAllTotals();
-    }
-
-    // Show specific page
-    function showPage(pageId) {
-      // Hide all pages
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
-      
-      // Remove active class from all tabs
-      document.querySelectorAll('.nav-tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      
-      // Show selected page
-      document.getElementById(pageId).classList.add('active');
-      
-      // Add active class to selected tab
-      event.target.classList.add('active');
-      
-      // Update summary if on summary page
-      if (pageId === 'summary') {
-        updateSummary();
-      }
-    }
-
-    // Calculate category total
-    function calculateCategoryTotal(contestant, category) {
-      let total = 0;
-      Object.values(scores[contestant][category]).forEach(score => {
-        total += parseFloat(score) || 0;
-      });
-      return total;
-    }
-
-    // Calculate grand total
-    function calculateGrandTotal(contestant) {
-      let total = 0;
-      Object.keys(scores[contestant]).forEach(category => {
-        total += calculateCategoryTotal(contestant, category);
-      });
-      return total;
-    }
-
-    // Update all totals
-    function updateAllTotals() {
-      // Update category totals
-      document.querySelectorAll('.category-total').forEach(cell => {
-        const contestant = cell.dataset.contestant;
-        const category = cell.dataset.category;
-        const total = calculateCategoryTotal(contestant, category);
-        cell.textContent = total.toFixed(1);
-      });
-      
-      // Update progress indicators
-      updateProgressIndicators();
-      
-      // Update summary if visible
-      if (document.getElementById('summary').classList.contains('active')) {
-        updateSummary();
-      }
-    }
-
-    // Update progress indicators
-    function updateProgressIndicators() {
-      const categoryList = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
-      
-      categoryList.forEach(category => {
-        let hasScores = false;
-        for (let contestant = 1; contestant <= 3; contestant++) {
-          Object.values(scores[contestant][category]).forEach(score => {
-            if (parseFloat(score) > 0) {
-              hasScores = true;
-            }
-          });
-        }
-        
-        const tab = document.querySelector(`[onclick="showPage('${category}')"] .progress-indicator`);
-        if (tab) {
-          if (hasScores) {
-            tab.classList.add('show');
-          } else {
-            tab.classList.remove('show');
-          }
-        }
-      });
-    }
-
-    // Update summary page
-    function updateSummary() {
-      for (let contestant = 1; contestant <= 3; contestant++) {
-        const categoryList = ['evening-gown', 'talent', 'interview', 'swimwear', 'question'];
-        
-        categoryList.forEach(category => {
-          const categoryTotal = calculateCategoryTotal(contestant, category);
-          const element = document.getElementById(`summary-${category}-${contestant}`);
-          if (element) {
-            element.textContent = categoryTotal.toFixed(1);
-          }
-        });
-        
-        const grandTotal = calculateGrandTotal(contestant);
-        const totalElement = document.getElementById(`summary-total-${contestant}`);
-        const cardElement = document.getElementById(`total-${contestant}`);
-        
-        if (totalElement) totalElement.textContent = grandTotal.toFixed(1);
-        if (cardElement) cardElement.textContent = grandTotal.toFixed(1);
-      }
-    }
-
-    // Handle score input with localStorage and validation
-    document.addEventListener('input', function(e) {
-      if (e.target.classList.contains('score-input')) {
-        const contestant = e.target.dataset.contestant;
-        const category = e.target.dataset.category;
-        const subcategory = e.target.dataset.subcategory;
-        let value = parseFloat(e.target.value) || 0;
-        
-        // Validate input range (1-10)
-        if (value < 1 && value !== 0) {
-          value = 1;
-          e.target.value = 1;
-        }
-        if (value > 10) {
-          value = 10;
-          e.target.value = 10;
-        }
-        
-        // Update scores object
-        scores[contestant][category][subcategory] = value;
-        
-        // Save to localStorage
-        const storageKey = `${JUDGE_NAME}_Contestant ${contestant}_${category}_${subcategory}`;
-        localStorage.setItem(storageKey, value.toString());
-        
-        // Update category total
-        const categoryTotal = calculateCategoryTotal(contestant, category);
-        const totalElement = document.querySelector(`.category-total[data-contestant="${contestant}"][data-category="${category}"]`);
-        if (totalElement) {
-          totalElement.textContent = categoryTotal.toFixed(1);
-        }
-        
-        // Visual feedback
-        e.target.style.borderColor = '#667eea';
-        setTimeout(() => {
-          e.target.style.borderColor = '#e2e8f0';
-        }, 1000);
-        
-        // Update progress indicators
-        updateProgressIndicators();
-        
-        // Update summary if on summary page
-        if (document.getElementById('summary').classList.contains('active')) {
-          updateSummary();
-        }
-      }
-    });
-
-    // Export CSV function (enhanced version)
-    function exportCSV() {
-      let rows = [];
-      let header = ["Contestant", ...categories.map(c => c.name), "Total"];
-      rows.push(header);
-
-      // Build data rows
-      for (let contestant = 1; contestant <= 3; contestant++) {
-        let row = [];
-        row.push(`Contestant ${contestant}`);
-        let sum = 0;
-        
-        categories.forEach(cat => {
-          // Extract category and subcategory from name
-          const parts = cat.name.split(' - ');
-          const categoryName = parts[0].toLowerCase().replace(/\s+/g, '-').replace('on-stage-question', 'question');
-          const subcategoryName = parts[1].toLowerCase().replace(/\s+/g, '-');
-          
-          const value = scores[contestant][categoryName] && scores[contestant][categoryName][subcategoryName] 
-            ? scores[contestant][categoryName][subcategoryName] 
-            : 0;
-          
-          row.push(value);
-          sum += parseFloat(value);
-        });
-        
-        row.push(sum.toFixed(2));
-        rows.push(row);
-      }
-
-      let csvContent = rows.map(e => e.join(",")).join("\n");
-      let blob = new Blob([csvContent], { type: "text/csv" });
-      let link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `${JUDGE_NAME}_complete_scores.csv`;
-      link.click();
-      
-      // Success feedback
-      const button = event.target;
-      const originalText = button.innerHTML;
-      button.innerHTML = '✅ Exported!';
-      button.style.background = '#48bb78';
-      setTimeout(() => {
-        button.innerHTML = originalText;
-        button.style.background = '';
-      }, 2000);
-    }
-
-    // Clear all scores
-    function clearAllScores() {
-      if (confirm('Are you sure you want to clear all scores from all categories?')) {
-        // Clear input fields
-        document.querySelectorAll('.score-input').forEach(input => {
-          input.value = '';
-        });
-        
-        // Clear category totals
-        document.querySelectorAll('.category-total').forEach(cell => {
-          cell.textContent = '0';
-        });
-        
-        // Clear localStorage
-        categories.forEach(cat => {
-          contestants.forEach(contestant => {
-            const parts = cat.name.split(' - ');
-            const categoryName = parts[0].toLowerCase().replace(/\s+/g, '-').replace('on-stage-question', 'question');
-            const subcategoryName = parts[1].toLowerCase().replace(/\s+/g, '-');
-            const storageKey = `${JUDGE_NAME}_${contestant}_${categoryName}_${subcategoryName}`;
-            localStorage.removeItem(storageKey);
-          });
-        });
-        
-        // Reset scores object
-        initializeScores();
-        updateProgressIndicators();
-        updateSummary();
-      }
-    }
-
-    // Initialize on page load (compatible with both DOMContentLoaded and window.onload)
-    window.onload = function() {
-      initializeScores();
-      updateProgressIndicators();
-      updateAllTotals();
-    };
-
-    // Backup initialization
-    document.addEventListener('DOMContentLoaded', function() {
-      if (!scores || Object.keys(scores).length === 0) {
-        initializeScores();
-        updateProgressIndicators();
-        updateAllTotals();
-      }
-    });
-  </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971fe838f0966023',t:'MTc1NTY3MjExMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  <script src="pageant-scoring.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971ff602d18481c0',t:'MTc1NTY3MjY3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
