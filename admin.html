@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Pageant Scoring</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .gradient-bg { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); }
+  </style>
+</head>
+<body class="min-h-screen gradient-bg text-white">
+  <nav class="bg-white/10 backdrop-blur border-b border-white/20">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <h1 class="text-xl font-bold">Admin Dashboard</h1>
+      <a href="index.html" class="px-3 py-2 rounded-lg bg-gray-600 hover:bg-gray-700">Home</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Login Gate -->
+    <div id="loginGate" class="bg-white/10 rounded-xl p-6 max-w-md mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Admin Login</h2>
+      <p class="text-white/80 text-sm mb-3">This page is protected by a static password.</p>
+      <input type="password" id="adminPass" placeholder="Enter password" class="w-full bg-white/20 text-white rounded px-3 py-2 border border-white/30 mb-3">
+      <button id="btnLogin" class="w-full px-4 py-2 rounded bg-purple-600 hover:bg-purple-700 font-bold">Login</button>
+      <p id="loginMsg" class="text-sm text-red-300 mt-2"></p>
+    </div>
+
+    <!-- Admin Content -->
+    <div id="adminContent" class="hidden">
+      <div class="grid md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white/10 rounded-xl p-6">
+          <h3 class="text-xl font-bold mb-3">Manage Judges</h3>
+          <div class="flex gap-2 mb-3">
+            <input type="text" id="judgeName" placeholder="Judge Name (e.g., Judge 2)" class="flex-1 bg-white/20 text-white rounded px-3 py-2 border border-white/30">
+            <button id="addJudge" class="px-3 py-2 rounded bg-purple-600 hover:bg-purple-700">Add</button>
+          </div>
+          <div id="judgeList" class="space-y-2"></div>
+          <p class="text-xs text-white/70 mt-3">Note: after adding a judge, duplicate <code>judge1.html</code> into <code>judgeX.html</code> and set its <code>JUDGE_ID</code>/<code>JUDGE_NAME</code>.</p>
+        </div>
+        <div class="bg-white/10 rounded-xl p-6">
+          <h3 class="text-xl font-bold mb-3">Manage Contestants</h3>
+          <div class="flex gap-2 mb-3">
+            <input type="text" id="contestantName" placeholder="Contestant Name" class="flex-1 bg-white/20 text-white rounded px-3 py-2 border border-white/30">
+            <button id="addContestant" class="px-3 py-2 rounded bg-purple-600 hover:bg-purple-700">Add</button>
+          </div>
+          <div id="contestantList" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-3 mb-6">
+        <button id="btnExport" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700">Export CSV</button>
+        <button id="btnClear" class="px-4 py-2 rounded bg-red-600 hover:bg-red-700">Clear All Scores</button>
+        <button id="btnResetConfig" class="px-4 py-2 rounded bg-gray-600 hover:bg-gray-700">Reset Config</button>
+      </div>
+
+      <div class="bg-white/10 rounded-xl p-6">
+        <h3 class="text-2xl font-bold mb-4">Final Rankings</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full" id="resultsTable">
+            <thead>
+              <tr class="border-b border-white/20">
+                <th class="text-left py-3 px-4">Rank</th>
+                <th class="text-left py-3 px-4">Contestant</th>
+                <th class="text-left py-3 px-4">Total</th>
+                <th class="text-left py-3 px-4">Average</th>
+                <th class="text-left py-3 px-4">Details</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
