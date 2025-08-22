@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Judge 2 — Scoring</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .gradient-bg { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); }
+  </style>
+</head>
+<body class="min-h-screen gradient-bg text-white">
+  <nav class="bg-white/10 backdrop-blur border-b border-white/20">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <h1 class="text-xl font-bold">Judge 2 — Scoring Panel</h1>
+      <a href="index.html" class="px-3 py-2 rounded-lg bg-gray-600 hover:bg-gray-700">Back</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <div class="bg-white/10 rounded-xl p-6 mb-6">
+      <div class="flex flex-wrap gap-3 items-center">
+        <label class="text-sm">Contestant:</label>
+        <select id="contestantSelect" class="bg-white/20 text-white rounded px-3 py-2 border border-white/30"></select>
+        <button id="btnSave" class="px-4 py-2 rounded bg-purple-600 hover:bg-purple-700 font-bold">Save Scores</button>
+        <span id="status" class="text-sm text-white/80"></span>
+      </div>
+    </div>
+
+    <div id="formArea" class="grid md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+  </main>
+
+  <script>
+    // Change these two constants when duplicating this page:
+    const JUDGE_ID = 1;
+    const JUDGE_NAME = "Judge 1";
+  </script>
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/judge.js"></script>
+</body>
+</html>
